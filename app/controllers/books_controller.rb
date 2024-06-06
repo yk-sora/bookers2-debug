@@ -2,14 +2,14 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_correct_user, only: [:edit, :update, :destroy]
   
-  def show
-    @book = Book.find(params[:id])
-    @book_new = Book.new
-  end
-
   def index
     @books = Book.all
     @book = Book.new
+  end
+  
+  def show
+    @book = Book.find(params[:id])
+    @book_new = Book.new
   end
 
   def create
@@ -19,7 +19,7 @@ class BooksController < ApplicationController
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
       @books = Book.all
-      render 'index'
+      render :index
     end
   end
 
@@ -32,7 +32,7 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to book_path(@book), notice: "You have updated book successfully."
     else
-      render "edit"
+      render :edit
     end
   end
 
@@ -54,4 +54,5 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:title, :body)
   end
+  
 end
